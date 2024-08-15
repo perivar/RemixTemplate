@@ -2,6 +2,15 @@
 
 - 📖 [Remix docs](https://remix.run/docs)
 
+## Installation
+
+Install new project:
+
+```shellscript
+npx create-remix@latest ./my-app --template https://github.com/perivar/RemixTemplate
+
+```
+
 ## Development
 
 Run the dev server:
