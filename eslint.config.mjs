@@ -31,7 +31,7 @@ export default eslintTs.config(
       'build',
       'public/build',
       '.env',
-      'vite.config.ts',
+      '*.config.ts',
     ],
   },
   {
