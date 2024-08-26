@@ -1,20 +1,19 @@
-import globals from 'globals';
-import { FlatCompat } from '@eslint/eslintrc';
-import { fixupPluginRules } from '@eslint/compat';
-import eslintJs from '@eslint/js';
-import eslintTs from 'typescript-eslint';
-import reactPlugin from 'eslint-plugin-react';
-import reactRecommended from 'eslint-plugin-react/configs/recommended.js';
-import reactJSXRuntime from 'eslint-plugin-react/configs/jsx-runtime.js';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
-import importPlugin from 'eslint-plugin-import';
-import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
-import unusedImportsPlugin from 'eslint-plugin-unused-imports';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { fixupPluginRules } from "@eslint/compat";
+import { FlatCompat } from "@eslint/eslintrc";
+import eslintJs from "@eslint/js";
+import pluginImport from "eslint-plugin-import";
+import pluginJsxA11y from "eslint-plugin-jsx-a11y";
+import pluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import pluginReact from "eslint-plugin-react";
+import pluginReactHooks from "eslint-plugin-react-hooks";
+import pluginReactJSXRuntime from "eslint-plugin-react/configs/jsx-runtime.js";
+import pluginReactRecommended from "eslint-plugin-react/configs/recommended.js";
+import pluginTailwind from "eslint-plugin-tailwindcss";
+import pluginUnusedImports from "eslint-plugin-unused-imports";
+import globals from "globals";
+import eslintTs from "typescript-eslint";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,20 +25,20 @@ const compat = new FlatCompat({
 export default eslintTs.config(
   {
     ignores: [
-      'node_modules',
-      '.cache',
-      'build',
-      'public/build',
-      '.env',
-      '*.config.ts',
+      "node_modules",
+      ".cache",
+      ".env",
+      "build",
+      "public/build",
+      "*.config.ts",
     ],
   },
   {
     ...eslintJs.configs.recommended,
-    ...eslintPluginPrettierRecommended,
+    ...pluginPrettierRecommended,
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
+      ecmaVersion: "latest",
+      sourceType: "module",
       globals: {
         ...globals.browser,
         ...globals.commonjs,
@@ -53,64 +52,61 @@ export default eslintTs.config(
     },
   },
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    ...reactRecommended,
-    ...reactJSXRuntime,
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    ...pluginReactRecommended,
+    ...pluginReactJSXRuntime,
     rules: {
-      ...reactRecommended.rules,
-      ...reactJSXRuntime.rules,
+      ...pluginReactRecommended.rules,
+      ...pluginReactJSXRuntime.rules,
     },
     languageOptions: {
-      ...reactRecommended.languageOptions,
-      ...reactJSXRuntime.languageOptions,
+      ...pluginReactRecommended.languageOptions,
+      ...pluginReactJSXRuntime.languageOptions,
     },
     plugins: {
-      react: reactPlugin,
-      'react-hooks': fixupPluginRules(reactHooksPlugin),
-      ['jsx-a11y']: jsxA11yPlugin,
+      react: pluginReact,
+      "react-hooks": fixupPluginRules(pluginReactHooks),
+      ["jsx-a11y"]: pluginJsxA11y,
     },
-    extends: [
-      ...compat.config(reactPlugin.configs.recommended),
-      ...compat.config(jsxA11yPlugin.configs.recommended),
-    ],
+    extends: [...pluginTailwind.configs["flat/recommended"]],
     settings: {
       react: {
-        version: 'detect',
+        version: "detect",
       },
-      formComponents: ['Form'],
+      formComponents: ["Form"],
       linkComponents: [
-        { name: 'Link', linkAttribute: 'to' },
-        { name: 'NavLink', linkAttribute: 'to' },
+        { name: "Link", linkAttribute: "to" },
+        { name: "NavLink", linkAttribute: "to" },
       ],
-      'import/resolver': {
+      "import/resolver": {
         typescript: {},
       },
     },
     rules: {
-      ...reactPlugin.configs.recommended.rules,
-      ...reactHooksPlugin.configs.recommended.rules,
-      ...jsxA11yPlugin.configs.recommended.rules,
-      'react/jsx-uses-react': 'off',
-      'react/react-in-jsx-scope': 'off',
+      ...pluginReact.configs.recommended.rules,
+      ...pluginReactHooks.configs.recommended.rules,
+      ...pluginJsxA11y.configs.recommended.rules,
+      "react/jsx-uses-react": "off",
+      "react/react-in-jsx-scope": "off",
+      "react/self-closing-comp": "off",
+      "react/no-unstable-nested-components": ["warn", { allowAsProps: true }],
+      "react/prop-types": "off",
+      "jsx-a11y/html-has-lang": "off",
+      "jsx-a11y/heading-has-content": "off",
     },
   },
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     plugins: {
-      import: importPlugin,
-      'simple-import-sort': simpleImportSortPlugin,
-      'unused-imports': unusedImportsPlugin,
+      import: pluginImport,
+      "unused-imports": pluginUnusedImports,
     },
-    extends: [
-      ...eslintTs.configs.recommended,
-      ...compat.config(importPlugin.configs.recommended),
-      ...compat.config(importPlugin.configs.typescript),
-    ],
+    extends: [...eslintTs.configs.recommended],
     settings: {
-      'import/internal-regex': '^~/',
-      'import/resolver': {
+      "import/internal-regex": "^~/",
+      "import/resolver": {
         node: {
-          extensions: ['.ts', '.tsx'],
+          extensions: [".ts", ".tsx"],
         },
         typescript: {
           alwaysTryTypes: true,
@@ -118,22 +114,23 @@ export default eslintTs.config(
       },
     },
     rules: {
-      'unused-imports/no-unused-imports': 'warn',
-      'simple-import-sort/imports': 'error',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
+      "unused-imports/no-unused-imports": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
         {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^_',
-          destructuredArrayIgnorePattern: '^_',
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
         },
       ],
-      '@typescript-eslint/no-shadow': ['error'],
+      "@typescript-eslint/no-shadow": ["error"],
+      "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
+      "@typescript-eslint/no-empty-object-type": "off",
     },
   },
   {
-    files: ['eslint.config.mjs'],
+    files: ["eslint.config.mjs"],
     languageOptions: {
       globals: {
         ...globals.node,

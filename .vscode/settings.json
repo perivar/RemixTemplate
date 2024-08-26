@@ -58,7 +58,7 @@
   ],
   "cSpell.diagnosticLevel": "Hint",
 
-  "i18n-ally.localesPaths": ["src/i18n/languages"],
+  "i18n-ally.localesPaths": ["app/i18n/languages"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.pathMatcher": "{locale}.json",
   "i18n-ally.sourceLanguage": "en",
