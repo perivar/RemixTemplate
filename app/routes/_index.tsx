@@ -1,6 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import { Command } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -20,7 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { ModeToggle } from "~/components/mode-toggle";
+import { ToastAction } from "~/components/ui/toast";
+import { useToast } from "~/components/ui/use-toast";
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,15 +30,10 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const { toast } = useToast();
+
   return (
     <section className="flex min-h-screen w-full flex-col">
-      <nav className="flex w-full items-center justify-between p-4">
-        <Link to="/" className="flex items-center space-x-2">
-          <Command className="size-8" />
-          <h1 className="text-xl font-semibold">Remix + Shadcn</h1>
-        </Link>
-        <ModeToggle />
-      </nav>
       <div className="container flex flex-1 justify-center overflow-x-hidden px-4 py-8 md:px-6">
         <div className="flex flex-col items-center space-y-4 p-4 text-center md:w-1/2">
           <h1 className="text-3xl font-bold tracking-tighter md:text-4xl">
@@ -48,6 +43,58 @@ export default function Index() {
             </span>{" "}
             For Remix and Shadcn-ui
           </h1>
+
+          <div className="font-sans">
+            <h1 className="text-2xl font-bold tracking-tighter md:text-3xl">
+              Welcome to Remix
+            </h1>
+            <ul className="mt-4 list-disc">
+              <li>
+                <Link
+                  className="hover:underline"
+                  target="_blank"
+                  to="https://remix.run/start/quickstart"
+                  rel="noreferrer">
+                  5m Quick Start
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="hover:underline"
+                  target="_blank"
+                  to="https://remix.run/start/tutorial"
+                  rel="noreferrer">
+                  30m Tutorial
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="hover:underline"
+                  target="_blank"
+                  to="https://remix.run/docs"
+                  rel="noreferrer">
+                  Remix Docs
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <Button
+              variant="outline"
+              onClick={() => {
+                toast({
+                  variant: "destructive",
+                  title: "Uh oh! Something went wrong.",
+                  description: "There was a problem with your request.",
+                  action: (
+                    <ToastAction altText="Try again">Try again</ToastAction>
+                  ),
+                });
+              }}>
+              Show Error Toast
+            </Button>
+          </div>
 
           <Card className="w-[350px]">
             <CardHeader>
@@ -83,41 +130,6 @@ export default function Index() {
               <Button>Deploy</Button>
             </CardFooter>
           </Card>
-
-          <div className="p-4 font-sans">
-            <h1 className="text-2xl font-bold tracking-tighter md:text-3xl">
-              Welcome to Remix
-            </h1>
-            <ul className="mt-4 list-disc">
-              <li>
-                <Link
-                  className="hover:underline"
-                  target="_blank"
-                  to="https://remix.run/start/quickstart"
-                  rel="noreferrer">
-                  5m Quick Start
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="hover:underline"
-                  target="_blank"
-                  to="https://remix.run/start/tutorial"
-                  rel="noreferrer">
-                  30m Tutorial
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="hover:underline"
-                  target="_blank"
-                  to="https://remix.run/docs"
-                  rel="noreferrer">
-                  Remix Docs
-                </Link>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
     </section>

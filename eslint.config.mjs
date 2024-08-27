@@ -116,7 +116,7 @@ export default eslintTs.config(
     rules: {
       "unused-imports/no-unused-imports": "warn",
       "@typescript-eslint/no-unused-vars": [
-        "error",
+        "warn",
         {
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^_",
@@ -124,7 +124,15 @@ export default eslintTs.config(
           destructuredArrayIgnorePattern: "^_",
         },
       ],
-      "@typescript-eslint/no-shadow": ["error"],
+      // Note: you must disable the base rule as it can report incorrect errors
+      "no-shadow": "off",
+      "@typescript-eslint/no-shadow": [
+        "warn",
+        {
+          ignoreTypeValueShadow: true,
+          ignoreFunctionTypeParameterNameValueShadow: true,
+        },
+      ],
       "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
       "@typescript-eslint/no-empty-object-type": "off",
     },

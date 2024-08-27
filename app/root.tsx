@@ -1,7 +1,6 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -19,6 +18,9 @@ import { themeSessionResolver } from "./sessions.server";
 import "./tailwind.css";
 
 import clsx from "clsx";
+
+import ResponsiveNavBar from "./components/responsive-navbar";
+import { Toaster } from "./components/ui/toaster";
 
 // https://gist.github.com/keepforever/43c5cfa72cad8b1dad2f3982fe81b576?permalink_comment_id=5117253#gistcomment-5117253
 
@@ -46,11 +48,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Links />
         </head>
         <body>
+          <ResponsiveNavBar />
           {/* children will be the root Component, ErrorBoundary, or HydrateFallback */}
           {children}
           <ScrollRestoration />
           <Scripts />
-          <LiveReload />
+          <Toaster />
         </body>
       </HTML>
     </ThemeProvider>
