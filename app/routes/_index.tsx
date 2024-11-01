@@ -1,7 +1,9 @@
 // app/routes/_index.tsx
 
-import type { MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { json, Link } from "@remix-run/react";
+import i18next from "~/i18n/i18n.server";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -24,26 +26,31 @@ import {
 import { ToastAction } from "~/components/ui/toast";
 import { useToast } from "~/components/ui/use-toast";
 
-export const meta: MetaFunction = () => {
+export async function loader({ request }: LoaderFunctionArgs) {
+  const t = await i18next.getFixedT(request);
+  return json({ title: t("title"), description: t("description") });
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: data?.title },
+    { name: "description", content: data?.description },
   ];
 };
 
 export default function Index() {
+  const { t } = useTranslation();
   const { toast } = useToast();
 
   return (
     <section className="flex min-h-screen w-full flex-col">
       <div className="container flex flex-1 justify-center overflow-x-hidden px-4 py-8 md:px-6">
         <div className="flex flex-col items-center space-y-4 p-4 text-center md:w-1/2">
-          <h1 className="text-3xl font-bold tracking-tighter md:text-4xl">
-            A{" "}
+          <h1 className="text-3xl font-bold tracking-tighter md:text-3xl">
             <span className="bg-gradient-to-r from-orange-700 via-blue-500 to-green-400 bg-clip-text font-extrabold text-transparent">
-              Simple Starter
+              {t("welcome_to")}
             </span>{" "}
-            For Remix and Shadcn-ui
+            {t("title")}
           </h1>
 
           <div className="font-sans">
