@@ -23,7 +23,7 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { useChangeLanguage } from "remix-i18next/react";
 
-import ResponsiveNavBar from "./components/responsive-navbar";
+import ResponsiveNavBar from "./components/ResponsiveNavBar";
 import { Toaster } from "./components/ui/toaster";
 import i18next, { localeCookie } from "./i18n/i18n.server";
 

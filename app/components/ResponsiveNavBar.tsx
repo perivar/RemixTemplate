@@ -1,8 +1,10 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "@remix-run/react";
 import { Command, Menu, Moon, Sun } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Theme, useTheme } from "remix-themes";
 
+import useIsMounted from "~/hooks/useIsMounted";
 import { Button } from "~/components/ui/button";
 import {
   NavigationMenu,
@@ -24,13 +26,16 @@ import {
 
 export default function ResponsiveNavBar() {
   const [theme, setTheme] = useTheme();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const isMounted = useIsMounted();
+
+  const { t } = useTranslation();
 
   const toggleTheme = () => {
     setTheme(theme === Theme.DARK ? Theme.LIGHT : Theme.DARK);
   };
 
-  const navBrand = "Remix + Shadcn";
+  const navBrand = t("title");
 
   const navItems = [
     {
@@ -166,11 +171,12 @@ export default function ResponsiveNavBar() {
               size="icon"
               onClick={toggleTheme}
               className="ml-auto">
-              {theme === "dark" ? (
-                <Sun className="size-5" />
-              ) : (
-                <Moon className="size-5" />
-              )}
+              {isMounted() &&
+                (theme === "dark" ? (
+                  <Sun className="size-5" />
+                ) : (
+                  <Moon className="size-5" />
+                ))}
               <span className="sr-only">Toggle theme</span>
             </Button>
           </div>
